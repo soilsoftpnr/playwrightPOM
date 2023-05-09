@@ -7,9 +7,13 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 
 import com.microsoft.playwright.Page;
+import com.qa.opencart.constants.AppConstants;
 import com.qa.opencart.factory.PlaywrightFactory;
 import com.qa.opencart.pages.HomePage;
 import com.qa.opencart.pages.LoginPage;
+import com.qa.opencart.tests.CodelessTest;
+
+import bsh.org.objectweb.asm.Constants;
 
 public class BaseTest {
 
@@ -19,14 +23,16 @@ public class BaseTest {
 
 	protected HomePage homePage;
 	protected LoginPage loginPage;
+	protected CodelessTest codelessTest;
 
 	@Parameters({ "browser" })
 	@BeforeTest
-	public void setup(String browserName) {
+	public void setup() {
 		pf = new PlaywrightFactory();
 
 		prop = pf.init_prop();
 
+	 String	browserName=AppConstants.BROWSER;
 		if (browserName != null) {
 			prop.setProperty("browser", browserName);
 		}
@@ -34,6 +40,8 @@ public class BaseTest {
 		page = pf.initBrowser(prop);
 		homePage = new HomePage(page);
 	}
+	
+	
 
 	@AfterTest
 	public void tearDown() {
