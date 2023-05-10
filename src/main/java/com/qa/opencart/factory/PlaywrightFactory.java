@@ -43,9 +43,9 @@ public class PlaywrightFactory {
 		return tlPage.get();
 	}
 
-	public Page initBrowser(Properties prop) {
+	public Page initBrowser(String browser,String url) {
 
-		String browserName = prop.getProperty("browser").trim();
+		String browserName = browser;
 		System.out.println("browser name is : " + browserName);
 
 		// playwright = Playwright.create();
@@ -77,7 +77,7 @@ public class PlaywrightFactory {
 
 		tlBrowserContext.set(getBrowser().newContext());
 		tlPage.set(getBrowserContext().newPage());
-		getPage().navigate(prop.getProperty("url").trim());
+		getPage().navigate(url);
 		return getPage();
 
 	}

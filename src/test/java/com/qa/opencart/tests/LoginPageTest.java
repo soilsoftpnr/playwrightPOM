@@ -8,22 +8,34 @@ import com.qa.opencart.constants.AppConstants;
 
 public class LoginPageTest extends BaseTest {
 
+	
+	public static String userName="//input[@name=\"username\"]";
+	public static String password="//input[@id=\"passwordtxt\"]";
+	public static String loginBtn="//span[text()=\" Login \"]/..";
+	public static String logo="//img[@class=\"app-logo-text ng-star-inserted\"]";
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Test(priority = 1)
-	public void loginPageNavigationTest() {
-		loginPage = homePage.navigateToLoginPage();
-		String actLoginPageTitle = loginPage.getLoginPageTitle();
-		System.out.println("page act title: " + actLoginPageTitle);
-		Assert.assertEquals(actLoginPageTitle, AppConstants.LOGIN_PAGE_TITLE);
+	public void loginTest() {
+		//Step#1
+		initializeBrowser("chromium","https://aquilaqa.pattesalabs.ai/signin");
+		//Step#2
+		enterText(userName, "namratha.pattesa@gmail.com");
+		//Step#3
+	    enterText(password, "Asdf@1230");
+	    //Step#4
+	    clickButton(loginBtn);
+	    //Step#5
+	    verifyLogo(logo);
 	}
 
-	@Test(priority = 2)
-	public void forgotPwdLinkExistTest() {
-		Assert.assertTrue(loginPage.isForgotPwdLinkExist());
-	}
-
-	@Test(priority = 3)
-	public void appLoginTest() {
-		Assert.assertTrue(loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim()));
-	}
+	
 
 }

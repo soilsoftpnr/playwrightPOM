@@ -23,6 +23,8 @@ import com.qa.opencart.tests.CodelessTest;
 
 import bsh.org.objectweb.asm.Constants;
 
+import static org.testng.Assert.assertEquals;
+
 import java.awt.Button;
 import java.awt.event.InputEvent;
 import com.microsoft.playwright.ElementHandle;
@@ -38,40 +40,55 @@ public class BaseTest {
 	protected LoginPage loginPage;
 	protected CodelessTest codelessTest;
 
-	@Parameters({ "browser" })
-	@BeforeTest
-	public void setup() {
+	public void initializeBrowser(String Browser,String url) {
 		pf = new PlaywrightFactory();
 
 		prop = pf.init_prop();
 
 
 	 String	browserName=AppConstants.BROWSER;
-		if (browserName != null) {
-			prop.setProperty("browser", browserName);
 
-         
-		if (AppConstants.BROWSER != null) {
-			prop.setProperty("browser", AppConstants.BROWSER);
-		}
 
-		page = pf.initBrowser(prop);
-		homePage = new HomePage(page);
+		page = pf.initBrowser(Browser,url);
+		
 		}
-	}
-	
+		
 	
 
 	@AfterTest
 	public void tearDown() {
 		page.context().browser().close();
 	}
-	
+	public static void highlightElement(String selector) {
+        try {
+        	ElementHandle element = page.querySelector(selector);
+        	 element.evaluate("element => { element.style.border = '5px solid orange'; }");	
+		} catch (Exception e) {
+		}
+    }
 	
 	public static void clickButton(String XpathName) {
 		String finalXpath =XpathName;
 		    log.info("Performing Click Action for"+XpathName);
 			page.querySelector(finalXpath).isVisible();
+			highlightElement(finalXpath);
+			page.querySelector(finalXpath).click();
+			
+	}
+	
+	public static void clickRadioButton(String XpathName) {
+		String finalXpath =XpathName;
+		    log.info("Performing ClickRadioButton Action for"+XpathName);
+			page.querySelector(finalXpath).isVisible();
+			highlightElement(finalXpath);
+			page.querySelector(finalXpath).click();
+	}
+	
+	public static void clickCheckBox(String XpathName) {
+		String finalXpath =XpathName;
+		    log.info("Performing clickCheckBox Action for"+XpathName);
+			page.querySelector(finalXpath).isVisible();
+			highlightElement(finalXpath);
 			page.querySelector(finalXpath).click();
 	}
 	
@@ -79,31 +96,56 @@ public class BaseTest {
 		String finalXpath =XpathName;
 		log.info("Performing Enter Text Action for"+XpathName);
 			page.querySelector(finalXpath).isVisible();
+			highlightElement(finalXpath);
 			page.querySelector(finalXpath).fill(value);
 			
 
 	}
 	
+	public static void verifyText(String xpathName,String expectingTextValue) {
+		String finalXpath =xpathName;
+		log.info("Performing Enter Text Action for"+xpathName);
+		highlightElement(finalXpath);
+			String getText=page.querySelector(finalXpath).textContent();
+			
+			try {
+				assertEquals(expectingTextValue, getText);
+			} catch (Exception e) {
+				Exception();
+			}
+			
+
+	}
+
 	public static String getText(String XpathName) {
 		String finalXpath =XpathName;
 		log.info("Performing get Text Action for"+XpathName);
 			page.querySelector(finalXpath).isVisible();
+			highlightElement(finalXpath);
 			String fetchedText=page.querySelector(finalXpath).textContent();
 			
            return fetchedText;
 	}
 	
-	public static boolean validate(String XpathName) {
-		log.info("Performing is Visible for"+XpathName);
+	public static void verifyLogo(String XpathName) {
+		    log.info("Performing is Visible for"+XpathName);
+		    highlightElement(XpathName);
 			page.querySelector(XpathName).isVisible();
 			boolean validateElement=page.querySelector(XpathName).isVisible();
 			
-           return validateElement;
+			try {
+				assertEquals(validateElement, true);
+			} catch (Exception e) {
+				Exception();
+			}
+
 	}
 	
 	
 	public static void dragAndDrop(String source,String destination) {
 		log.info("Performing drag and drop");
+		highlightElement(source);
+		highlightElement(destination);
 	// Drag and drop source element onto destination element
     page.dragAndDrop(source, destination);
     // Close the browser
@@ -117,5 +159,14 @@ public class BaseTest {
 		 page.evaluate("window.scrollBy(0, "+scrollLength+")");
 	}
 	
-	
+	public static void Exception() {
+		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        if (stackTrace.length > 0) {
+            StackTraceElement element = stackTrace[0];
+            String className = element.getClassName();
+            String fileName = element.getFileName();
+            int lineNumber = element.getLineNumber();
+            System.out.println("Exception occurred in class " + className + ", file " + fileName + ", line " + lineNumber);
+        }
+	}
 }
