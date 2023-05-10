@@ -30,7 +30,7 @@ import java.awt.event.InputEvent;
 import com.microsoft.playwright.ElementHandle;
 
 
-public class BaseTest {
+public class BaseTest extends PlaywrightFactory {
 	public static Logger log = Logger.getLogger(BaseTest.class);
 	PlaywrightFactory pf;
 	static Page page;
@@ -73,6 +73,7 @@ public class BaseTest {
 			page.querySelector(finalXpath).isVisible();
 			highlightElement(finalXpath);
 			page.querySelector(finalXpath).click();
+			takeScreenshot();
 			
 	}
 	
@@ -82,6 +83,7 @@ public class BaseTest {
 			page.querySelector(finalXpath).isVisible();
 			highlightElement(finalXpath);
 			page.querySelector(finalXpath).click();
+			takeScreenshot();
 	}
 	
 	public static void clickCheckBox(String XpathName) {
@@ -90,6 +92,7 @@ public class BaseTest {
 			page.querySelector(finalXpath).isVisible();
 			highlightElement(finalXpath);
 			page.querySelector(finalXpath).click();
+			takeScreenshot();
 	}
 	
 	public static void enterText(String XpathName,String value) {
@@ -98,16 +101,17 @@ public class BaseTest {
 			page.querySelector(finalXpath).isVisible();
 			highlightElement(finalXpath);
 			page.querySelector(finalXpath).fill(value);
+			takeScreenshot();
 			
 
 	}
 	
 	public static void verifyText(String xpathName,String expectingTextValue) {
 		String finalXpath =xpathName;
-		log.info("Performing Enter Text Action for"+xpathName);
+		log.info("Performing verifyText  Action for"+xpathName);
 		highlightElement(finalXpath);
 			String getText=page.querySelector(finalXpath).textContent();
-			
+			takeScreenshot();
 			try {
 				assertEquals(expectingTextValue, getText);
 			} catch (Exception e) {
@@ -122,17 +126,18 @@ public class BaseTest {
 		log.info("Performing get Text Action for"+XpathName);
 			page.querySelector(finalXpath).isVisible();
 			highlightElement(finalXpath);
+			takeScreenshot();
 			String fetchedText=page.querySelector(finalXpath).textContent();
 			
            return fetchedText;
 	}
 	
 	public static void verifyLogo(String XpathName) {
-		    log.info("Performing is Visible for"+XpathName);
+		    log.info("Performing verifyLogo for"+XpathName);
 		    highlightElement(XpathName);
 			page.querySelector(XpathName).isVisible();
 			boolean validateElement=page.querySelector(XpathName).isVisible();
-			
+			takeScreenshot();
 			try {
 				assertEquals(validateElement, true);
 			} catch (Exception e) {
@@ -148,6 +153,7 @@ public class BaseTest {
 		highlightElement(destination);
 	// Drag and drop source element onto destination element
     page.dragAndDrop(source, destination);
+    takeScreenshot();
     // Close the browser
    }
 	
