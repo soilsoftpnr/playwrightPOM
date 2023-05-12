@@ -1,11 +1,14 @@
 package com.qa.opencart.base;
 
+import org.testng.Assert;
 import java.util.Properties;
+
 
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.apache.log4j.Logger;
+
 
 import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
@@ -20,16 +23,14 @@ import com.qa.opencart.factory.PlaywrightFactory;
 import com.qa.opencart.pages.HomePage;
 import com.qa.opencart.pages.LoginPage;
 import com.qa.opencart.tests.CodelessTest;
-
-import bsh.org.objectweb.asm.Constants;
+import com.qa.opencart.tests.LoginPageTest;
 
 import static org.testng.Assert.assertEquals;
 
 import java.awt.Button;
 import java.awt.event.InputEvent;
 import com.microsoft.playwright.ElementHandle;
-
-
+import com.qa.constants.*;
 public class BaseTest extends PlaywrightFactory {
 	public static Logger log = Logger.getLogger(BaseTest.class);
 	PlaywrightFactory pf;
@@ -39,18 +40,24 @@ public class BaseTest extends PlaywrightFactory {
 	protected HomePage homePage;
 	protected LoginPage loginPage;
 	protected CodelessTest codelessTest;
-
+    protected LoginPageTest loginpageTest;
+    
+    
+    
+    
+    
+    
 	public void initializeBrowser(String Browser,String url) {
 		pf = new PlaywrightFactory();
 
 		prop = pf.init_prop();
-
+ 
 
 	 String	browserName=AppConstants.BROWSER;
 
 
 		page = pf.initBrowser(Browser,url);
-		
+		page.setDefaultTimeout(Constants.durationTimeOut);
 		}
 		
 	
@@ -139,7 +146,7 @@ public class BaseTest extends PlaywrightFactory {
 			boolean validateElement=page.querySelector(XpathName).isVisible();
 			takeScreenshot();
 			try {
-				assertEquals(validateElement, true);
+				Assert.assertEquals(validateElement, true);
 			} catch (Exception e) {
 				Exception();
 			}

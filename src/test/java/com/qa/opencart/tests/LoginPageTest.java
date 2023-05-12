@@ -6,34 +6,26 @@ import org.testng.annotations.Test;
 import com.qa.opencart.base.BaseTest;
 import com.qa.opencart.constants.AppConstants;
 
+import CommonUtils.Locaters;
+import CommonUtils.TestData;
+
 public class LoginPageTest extends BaseTest {
 
-	
-	public static String userName="//input[@name=\"username\"]";
-	public static String password="//input[@id=\"passwordtxt\"]";
-	public static String loginBtn="//span[text()=\" Login \"]/..";
-	public static String logo="//img[@class=\"app-logo-text ng-star-inserted\"]";
-	
-	
-	
-	
-	
-	
 	
 	
 	
 	@Test(priority = 1)
 	public void loginTest() {
 		//Step#1
-		initializeBrowser("chromium","https://aquilaqa.pattesalabs.ai/signin");
+		initializeBrowser(TestData.browser,TestData.url);
 		//Step#2
-		enterText(userName, "namratha.pattesa@gmail.com");
+		enterText(Locaters.userName, TestData.userName);
 		//Step#3
-	    enterText(password, "Asdf@1230");
+	    enterText(Locaters.password, TestData.password);
 	    //Step#4
-	    clickButton(loginBtn);
+	    clickButton(Locaters.loginBtn);
 	    //Step#5
-	    verifyLogo(logo);
+	    verifyLogo(Locaters.logo);
 	}
 
 	

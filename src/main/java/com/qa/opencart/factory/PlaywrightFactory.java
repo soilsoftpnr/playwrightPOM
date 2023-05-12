@@ -11,8 +11,11 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.BrowserType.LaunchOptions;
+import com.qa.constants.Constants;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+
+
 
 public class PlaywrightFactory {
 
@@ -109,10 +112,14 @@ public class PlaywrightFactory {
 	public static String takeScreenshot() {
 		String path = System.getProperty("user.dir") + "/screenshot/" + System.currentTimeMillis() + ".png";
 		//getPage().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(path)).setFullPage(true));
-		
-		byte[] buffer = getPage().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(path)).setFullPage(true));
+		byte[] buffer=null;
+		try {
+			 buffer = getPage().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(path)).setFullPage(true));
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		String base64Path = Base64.getEncoder().encodeToString(buffer);
-		
 		return base64Path;
 	}
 
