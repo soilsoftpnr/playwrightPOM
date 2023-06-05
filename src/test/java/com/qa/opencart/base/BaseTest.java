@@ -77,9 +77,9 @@ public class BaseTest extends PlaywrightFactory {
 	public static void clickButton(String XpathName) {
 		String finalXpath =XpathName;
 		    log.info("Performing Click Action for"+XpathName);
-			page.querySelector(finalXpath).isVisible();
+		    page.isVisible(XpathName);
 			highlightElement(finalXpath);
-			page.querySelector(finalXpath).click();
+			page.click(finalXpath);
 			takeScreenshot();
 			
 	}
@@ -87,9 +87,9 @@ public class BaseTest extends PlaywrightFactory {
 	public static void clickRadioButton(String XpathName) {
 		String finalXpath =XpathName;
 		    log.info("Performing ClickRadioButton Action for"+XpathName);
-			page.querySelector(finalXpath).isVisible();
+		    page.isVisible(XpathName);
 			highlightElement(finalXpath);
-			page.querySelector(finalXpath).click();
+			page.click(finalXpath);
 			takeScreenshot();
 	}
 	
@@ -98,7 +98,7 @@ public class BaseTest extends PlaywrightFactory {
 		    log.info("Performing clickCheckBox Action for"+XpathName);
 			page.querySelector(finalXpath).isVisible();
 			highlightElement(finalXpath);
-			page.querySelector(finalXpath).click();
+			page.click(finalXpath);
 			takeScreenshot();
 	}
 	
@@ -131,10 +131,10 @@ public class BaseTest extends PlaywrightFactory {
 	public static String getText(String XpathName) {
 		String finalXpath =XpathName;
 		log.info("Performing get Text Action for"+XpathName);
-			page.querySelector(finalXpath).isVisible();
+		page.isVisible(XpathName);
 			highlightElement(finalXpath);
 			takeScreenshot();
-			String fetchedText=page.querySelector(finalXpath).textContent();
+			String fetchedText=page.innerText(finalXpath);
 			
            return fetchedText;
 	}
@@ -142,8 +142,7 @@ public class BaseTest extends PlaywrightFactory {
 	public static void verifyLogo(String XpathName) {
 		    log.info("Performing verifyLogo for"+XpathName);
 		    highlightElement(XpathName);
-			page.querySelector(XpathName).isVisible();
-			boolean validateElement=page.querySelector(XpathName).isVisible();
+			boolean validateElement=page.isVisible(XpathName);
 			takeScreenshot();
 			try {
 				Assert.assertEquals(validateElement, true);
