@@ -16,6 +16,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.BoundingBox;
 import com.microsoft.playwright.options.MouseButton;
 import com.microsoft.playwright.options.SelectOption;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import com.qa.opencart.constants.AppConstants;
 import com.qa.opencart.factory.PlaywrightFactory;
 import com.qa.opencart.pages.HomePage;
@@ -144,10 +145,12 @@ public class BaseTest extends PlaywrightFactory {
 
 	public static void verifyLogo(String xpath) {
 		log.info("Performing verifyLogo for" + xpath);
+		page.waitForSelector(xpath,new Page.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE));
 		highlightElement(xpath);
-		boolean validateElement = page.isVisible(xpath);
+		boolean validateElement=true;
 		takeScreenshot();
 		try {
+			
 			Assert.assertEquals(validateElement, true);
 		} catch (Exception e) {
 			Exception();
