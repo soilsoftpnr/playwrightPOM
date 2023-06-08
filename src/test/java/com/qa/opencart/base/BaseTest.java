@@ -85,7 +85,7 @@ public class BaseTest extends PlaywrightFactory {
 	}
 
 	public static void selectCheckBox(String xpath) {
-		page.querySelector(xpath).isVisible();
+		page.isVisible(xpath);
 		highlightElement(xpath);
 		if (!page.isChecked(xpath)) {
 			page.click(xpath);
@@ -105,7 +105,7 @@ public class BaseTest extends PlaywrightFactory {
 
 	public static void unSelectCheckBox(String xpath) {
 		log.info("Performing clickCheckBox Action for" + xpath);
-		page.querySelector(xpath).isVisible();
+		page.isVisible(xpath);
 		highlightElement(xpath);
 		if (page.isChecked(xpath)) {
 			page.click(xpath);
@@ -115,16 +115,16 @@ public class BaseTest extends PlaywrightFactory {
 
 	public static void enterText(String xpath, String value) {
 		log.info("Performing Enter Text Action for" + xpath);
-		page.querySelector(xpath).isVisible();
+		page.isVisible(xpath);
 		highlightElement(xpath);
-		page.querySelector(xpath).fill(value);
+		page.fill(xpath, value);
 		takeScreenshot();
 	}
 
 	public static void verifyText(String xpath, String expectingTextValue) {
 		log.info("Performing verifyText  Action for" + xpath);
 		highlightElement(xpath);
-		String getText = page.querySelector(xpath).textContent();
+		String getText = page.innerText(xpath);
 		takeScreenshot();
 		try {
 			assertEquals(expectingTextValue, getText);
