@@ -17,6 +17,7 @@ import com.microsoft.playwright.Playwright;
 
 
 
+
 public class PlaywrightFactory {
 
 	Playwright playwright;
@@ -56,7 +57,7 @@ public class PlaywrightFactory {
 
 		switch (browserName.toLowerCase()) {
 		case "chromium":
-			tlBrowser.set(getPlaywright().chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)));
+			tlBrowser.set(getPlaywright().chromium().launch(new BrowserType.LaunchOptions().setHeadless(true)));
 			break;
 		case "firefox":
 			tlBrowser.set(getPlaywright().firefox().launch(new BrowserType.LaunchOptions().setHeadless(false)));
@@ -78,7 +79,7 @@ public class PlaywrightFactory {
 			break;
 		}
 
-		tlBrowserContext.set(getBrowser().newContext());
+		tlBrowserContext.set(getBrowser().newContext(new Browser.NewContextOptions().setRecordVideoDir(Paths.get("testvideos/")).setRecordVideoSize(640,480)));
 		tlPage.set(getBrowserContext().newPage());
 		getPage().navigate(url);
 		return getPage();
