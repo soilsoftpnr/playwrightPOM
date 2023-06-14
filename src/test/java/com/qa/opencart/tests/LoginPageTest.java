@@ -16,6 +16,7 @@ public class LoginPageTest extends BaseTest {
 	
 	@Test(priority = 1)
 	public void loginTest() {
+		logger=extent.createTest("Login to Aquila");
 		//Step#1
 		initializeBrowser(TestData.browser,TestData.url);
 		//Step#2
@@ -25,7 +26,7 @@ public class LoginPageTest extends BaseTest {
 	    //Step#4
 	    clickButton(Locaters.loginBtn);
 	    //Step#5
-	    verifyLogo(Locaters.logo);
+	    verifyLogo(Locaters.userName);
 	}
 
 	
