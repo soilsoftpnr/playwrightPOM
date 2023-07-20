@@ -38,9 +38,6 @@ import com.qa.opencart.pages.HomePage;
 import com.qa.opencart.pages.LoginPage;
 import com.qa.opencart.tests.CodelessTest;
 import com.qa.opencart.tests.LoginPageTest;
-import com.xuggle.mediatool.IMediaReader;
-import com.xuggle.mediatool.IMediaWriter;
-import com.xuggle.mediatool.ToolFactory;
 
 import static org.testng.Assert.assertEquals;
 
