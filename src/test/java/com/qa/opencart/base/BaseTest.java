@@ -111,7 +111,8 @@ public class BaseTest extends PlaywrightFactory {
 		String browserName = AppConstants.BROWSER;
 
 		page = pf.initBrowser(Browser, url);
-		page.setDefaultTimeout(Constants.durationTimeOut);
+        // Maximize the window
+       page.setDefaultTimeout(Constants.durationTimeOut);
 
 	}
 

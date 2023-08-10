@@ -108,7 +108,7 @@ public class PlaywrightFactory {
 			break;
 		}
 
-		tlBrowserContext.set(getBrowser().newContext(new Browser.NewContextOptions().setRecordVideoDir(Paths.get("testvideos/")).setRecordVideoSize(640,480)));
+		tlBrowserContext.set(getBrowser().newContext(new Browser.NewContextOptions().setRecordVideoDir(Paths.get("testvideos/")).setRecordVideoSize(640,480).setViewportSize(1920, 1080)));
 		tlPage.set(getBrowserContext().newPage());
 		getPage().navigate(url);
 		return getPage();
