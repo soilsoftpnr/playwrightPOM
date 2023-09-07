@@ -6,11 +6,11 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.aventstack.extentreports.MediaEntityBuilder;
-import com.qa.opencart.base.BaseTest;
 import com.qa.opencart.constants.AppConstants;
 
-import CommonUtils.Locaters;
-import CommonUtils.TestData;
+import automate.bastest.methods.BaseTest;
+import automate.utils.common.Locaters;
+import automate.utils.common.TestData;
 
 public class ComplexScenarios extends BaseTest {
 

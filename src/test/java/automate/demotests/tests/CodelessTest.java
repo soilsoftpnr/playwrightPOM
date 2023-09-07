@@ -1,13 +1,14 @@
-package com.qa.opencart.tests;
+package automate.demotests.tests;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.microsoft.playwright.Page;
-import com.qa.opencart.base.BaseTest;
 import com.qa.opencart.constants.AppConstants;
 import com.qa.opencart.factory.PlaywrightFactory;
+
+import automate.bastest.methods.BaseTest;
 
 import java.util.ArrayList;
 import java.util.Properties;

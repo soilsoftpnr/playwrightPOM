@@ -10,6 +10,7 @@ public class AppConstants {
 	public static final String BROWSER = "safari";
 	
 	public static String folderpath=System.getProperty("user.dir") + "\\screenshot\\";
+	public static String ELEMENT_SCREENSHOT_folderpath=System.getProperty("user.dir") + "\\ElementsScreenshots\\";
 	
 
 }

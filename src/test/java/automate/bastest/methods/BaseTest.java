@@ -1,4 +1,4 @@
-package com.qa.opencart.base;
+package automate.bastest.methods;
 
 import org.testng.Assert;
 import org.testng.ITestResult;
@@ -36,8 +36,9 @@ import com.qa.opencart.constants.AppConstants;
 import com.qa.opencart.factory.PlaywrightFactory;
 import com.qa.opencart.pages.HomePage;
 import com.qa.opencart.pages.LoginPage;
-import com.qa.opencart.tests.CodelessTest;
-import com.qa.opencart.tests.LoginPageTest;
+
+import automate.demotests.tests.CodelessTest;
+import automate.demotests.tests.LoginPageTest;
 
 import static org.testng.Assert.assertEquals;
 
@@ -45,10 +46,12 @@ import java.awt.Button;
 import java.awt.event.InputEvent;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -254,9 +257,46 @@ public class BaseTest extends PlaywrightFactory {
 		highlightElement(xpath);
 		page.fill(xpath, value);
 		takeScreenshot();
-		  Keyboard keyboard = page.keyboard();
-	        keyboard.press("Tab");
 	}
+	
+	public static void typeAndSelectValue(String xpath, String value,int index) {
+		log.info("Performing Enter Text Action for" + xpath);
+		page.isVisible(xpath);
+		highlightElement(xpath);
+		page.fill(xpath, value);
+		takeScreenshot();
+		  Keyboard keyboard = page.keyboard();
+		  
+			  keyboard.press("ArrowDown");
+		
+		  keyboard.press("Enter");
+	}
+	
+	public static void getScreenshotOfParticularElement(String xpath) {
+		log.info("Performing clickCheckBox Action for" + xpath);
+		page.isVisible(xpath);
+		ElementHandle element = page.waitForSelector(xpath, new Page.WaitForSelectorOptions().setTimeout(250));
+
+		highlightElement(xpath);
+		
+		    
+	 // Take a screenshot of the element.
+		 
+		  try { byte[] screenshotData = element.screenshot();
+              String filePath = AppConstants.ELEMENT_SCREENSHOT_folderpath+ System.currentTimeMillis() + ".png";;
+              try (FileOutputStream fos = new FileOutputStream(filePath)) {
+                  fos.write(screenshotData);
+                  System.out.println("Screenshot saved to: "+filePath);
+              } catch (IOException e) {
+                  e.printStackTrace();
+              } } catch (Exception e) {
+              e.printStackTrace();
+          }
+          
+		    
+		   
+	}
+
 
 	public static void verifyText(String xpath, String expectingTextValue) {
 		log.info("Performing verifyText  Action for" + xpath);
@@ -338,6 +378,24 @@ public class BaseTest extends PlaywrightFactory {
 	}
 
 	public static void isButtonVisible(String xpath) {
+		boolean status = false;
+		try {
+			ElementHandle element = page.waitForSelector(xpath, new Page.WaitForSelectorOptions().setTimeout(100));
+			if (element == null) {
+				status = false;
+			} else {
+				status = element.isVisible();
+			}
+		} catch (PlaywrightException ex) {
+			status = false;
+		}
+		highlightElement(xpath);
+		takeScreenshot();
+		Assert.assertEquals(status, true);
+	}
+	
+	
+	public static void isLogoVisible(String xpath) {
 		boolean status = false;
 		try {
 			ElementHandle element = page.waitForSelector(xpath, new Page.WaitForSelectorOptions().setTimeout(100));

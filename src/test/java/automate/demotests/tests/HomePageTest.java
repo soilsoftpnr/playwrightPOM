@@ -1,11 +1,12 @@
-package com.qa.opencart.tests;
+package automate.demotests.tests;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.qa.opencart.base.BaseTest;
 import com.qa.opencart.constants.AppConstants;
+
+import automate.bastest.methods.BaseTest;
 
 public class HomePageTest extends BaseTest {
 

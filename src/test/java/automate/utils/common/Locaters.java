@@ -1,4 +1,4 @@
-package CommonUtils;
+package automate.utils.common;
 
 public class Locaters {
 	public static String userName="//input[@name=\"username\"]";
@@ -65,6 +65,24 @@ public class Locaters {
 	public static String buttonGenerate="//button[@id=\"buttonGenerate\"]";
 	public static String buttonCopy="//button[@id=\"buttonCopy\"]";
 	
+	public static String orangeHRMLoginPageLogo="//img[@alt='company-branding']";
+	public static String orangeHRNUserName="//input[@placeholder='Username']";
+	public static String orangeHRMPassword="//input[@placeholder='Password']";
+	public static String orangeHRMLoginButton="//button[@type='submit']";
+	public static String orangeHRMDashboard="//h6[@class='oxd-text oxd-text--h6 oxd-topbar-header-breadcrumb-module']";
+	public static String orangeHRMAdmin="//span[normalize-space()='Admin']/..";
+	public static String orangeHRMAddUser="//i[@class='oxd-icon bi-plus oxd-button-icon']";
+	
+	public static String orangeHRMUserRole="//div[@class='oxd-select-text-input'][normalize-space()='-- Select --']/..";
+	public static String oraneHRMSelectUser="(//div[contains(@class,\"select-dropdown\")]//div)[2]";
+	public static String orangeHRMEmployeeName="//input[@placeholder='Type for hints...']";
+	public static String  orangeHRMSelectEmployeeName="(//div[contains(@class,\"select-dropdown\")]//div)[2]";
+	public static String orangeHRMStatus="//div[contains(text(),'-- Select --')]";
+	public static String oraneHRMSelectStatus="(//div[contains(@class,\"select-dropdown\")]//div)[2]";
+	public static String orangeHRMUsername="//label[text()=\"Username\"]/../..//input";
+	public static String orangeHRMUserNewPassword="//label[text()=\"Password\"]/../..//input";
+	public static String orangeHRMUserConfirmNewPassword="//label[text()=\"Confirm Password\"]/../..//input";
+	public static String orangeHRMSaveUser="//button[@type='submit']";
 	
 	
 }
