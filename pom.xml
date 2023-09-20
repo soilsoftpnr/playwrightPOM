@@ -27,11 +27,83 @@
         <artifactId>jsch</artifactId>
         <version>0.1.55</version> <!-- Replace with the latest version -->
     </dependency>
+    <dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi</artifactId>
+    <version>5.0.0</version> <!-- Replace with the latest version -->
+</dependency>
+
 <dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml</artifactId>
+    <version>5.0.0</version> <!-- Replace with the latest version -->
+</dependency>
+
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi</artifactId>
+    <version>5.0.0</version> <!-- Replace with the latest version -->
+</dependency>
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml</artifactId>
+    <version>5.0.0</version> <!-- Replace with the latest version -->
+</dependency>
+
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-scratchpad</artifactId>
+    <version>5.0.0</version> <!-- Replace with the latest version -->
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc10 -->
+<dependency>
+    <groupId>com.oracle.database.jdbc</groupId>
+    <artifactId>ojdbc10</artifactId>
+    <version>19.17.0.0</version>
+</dependency> 
+  <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>42.3.1</version> <!-- Replace with the latest version available -->
+    </dependency>
+    <dependency>
+    <groupId>com.microsoft.sqlserver</groupId>
+    <artifactId>mssql-jdbc</artifactId>
+    <version>9.4.0.jre8</version> <!-- Replace with the latest version available -->
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3 -->
+<dependency>
+    <groupId>com.amazonaws</groupId>
+    <artifactId>aws-java-sdk-s3</artifactId>
+    <version>1.12.406</version>
+</dependency>  <dependency>
+        <groupId>com.jayway.jsonpath</groupId>
+        <artifactId>json-path</artifactId>
+        <version>2.6.0</version>
+    </dependency>
+ <dependency>
+        <groupId>org.mongodb</groupId>
+        <artifactId>mongo-java-driver</artifactId>
+        <version>3.12.10</version> <!-- Use the appropriate version -->
+    </dependency>
+<dependency>
+    <groupId>ru.yandex.qatools.ashot</groupId>
+    <artifactId>ashot</artifactId>
+    <version>1.5.4</version>
+</dependency>
+<dependency>
+
     <groupId>commons-io</groupId>
     <artifactId>commons-io</artifactId>
     <version>2.13.0</version>
 </dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
+<dependency>
+    <groupId>org.apache.pdfbox</groupId>
+    <artifactId>pdfbox</artifactId>
+    <version>2.0.27</version> <!-- Replace with the latest version -->
+</dependency>
+
 <dependency>
 			<groupId>com.microsoft.playwright</groupId>
 			<artifactId>playwright</artifactId>

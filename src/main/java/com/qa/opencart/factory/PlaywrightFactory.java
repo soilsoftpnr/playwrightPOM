@@ -18,6 +18,9 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.BrowserType.LaunchOptions;
 import com.qa.constants.Constants;
 import com.qa.opencart.constants.AppConstants;
+
+//import automate.handlingdevtools.methods.DevTools;
+
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import org.jsoup.Jsoup;
@@ -34,8 +37,9 @@ public class PlaywrightFactory {
 	Browser browser;
 	protected BrowserContext browserContext;
 	Page page;
-	Properties prop;
-
+	public static Properties prop;
+	public static Properties testData;
+	public static Properties saveData;
 	private static ThreadLocal<Browser> tlBrowser = new ThreadLocal<>();
 	protected static ThreadLocal<BrowserContext> tlBrowserContext = new ThreadLocal<>();
 	protected static ThreadLocal<Page> tlPage = new ThreadLocal<>();
@@ -77,7 +81,7 @@ public class PlaywrightFactory {
     }
 
 	public Page initBrowser(String browser,String url) {
-
+		
 		String browserName = browser;
 		System.out.println("browser name is : " + browserName);
 
@@ -110,6 +114,10 @@ public class PlaywrightFactory {
 
 		tlBrowserContext.set(getBrowser().newContext(new Browser.NewContextOptions().setRecordVideoDir(Paths.get("testvideos/")).setRecordVideoSize(640,480).setViewportSize(1366, 768)));
 		tlPage.set(getBrowserContext().newPage());
+		//DevTools devTools = page.devtools();
+        //devTools.createSession();
+
+       
 		getPage().navigate(url);
 		return getPage();
 
@@ -121,6 +129,19 @@ public class PlaywrightFactory {
 	public Properties init_prop() {
 
 		try {
+
+       testData= new Properties();
+		saveData=new Properties();;
+		FileInputStream td = null, sd = null;
+		
+		td = new FileInputStream(
+				System.getProperty("user.dir") +"\\resources\\testData.properties");
+		
+		sd = new FileInputStream(
+				System.getProperty("user.dir") +"\\resources\\saveData.properties");
+		
+		testData.load(td);
+		saveData.load(sd);
 			FileInputStream ip = new FileInputStream("./src/test/resources/config/config.properties");
 			prop = new Properties();
 			prop.load(ip);

@@ -6,6 +6,8 @@ import org.apache.commons.io.FileUtils;
 import java.util.Date;
 import java.util.Properties;
 
+import javax.imageio.ImageIO;
+
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -39,13 +41,18 @@ import com.qa.opencart.pages.LoginPage;
 
 import automate.demotests.tests.CodelessTest;
 import automate.demotests.tests.LoginPageTest;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
 
 import static org.testng.Assert.assertEquals;
 
 import java.awt.Button;
 import java.awt.event.InputEvent;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -62,9 +69,9 @@ import com.qa.constants.*;
 public class BaseTest extends PlaywrightFactory {
 	public static Logger log = Logger.getLogger(BaseTest.class);
 	PlaywrightFactory pf;
+	
+	public static Page page;
 
-	static Page page;
-	protected Properties prop;
 	public ExtentReports extent;
 	public static ExtentTest logger;
 	protected HomePage homePage;
@@ -73,9 +80,12 @@ public class BaseTest extends PlaywrightFactory {
 	protected LoginPageTest loginpageTest;
 	public String folder = System.getProperty("user.dir") + "/screenshot/";
 
-	@BeforeTest
-	public void startReport() {
+		
+	
 
+	@BeforeTest
+	public void startReport(){
+		
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyyHH-mm-ss");
 		Date dt = new Date();
 		String fileName;
@@ -107,10 +117,10 @@ public class BaseTest extends PlaywrightFactory {
 		}
 	}
 
-	public void initializeBrowser(String Browser, String url) {
+	public void initializeBrowser(String Browser, String url)   {
 		pf = new PlaywrightFactory();
 		prop = pf.init_prop();
-
+		
 		String browserName = AppConstants.BROWSER;
 
 		page = pf.initBrowser(Browser, url);
@@ -542,7 +552,42 @@ public class BaseTest extends PlaywrightFactory {
 		return link;
 
 	}
+	
+	
+	  public static boolean visualTesting(String screenshotPath, String referenceImagePath) {
+		
+		  try {
+          // Load the images
+          BufferedImage image1 = ImageIO.read(new File(screenshotPath));
+          BufferedImage image2 = ImageIO.read(new File(referenceImagePath));
 
+          // Check if images have the same dimensions
+          if (image1.getWidth() != image2.getWidth() || image1.getHeight() != image2.getHeight()) {
+              return true; // Images have different dimensions, consider them different
+          }
+
+          // Compare pixel by pixel
+          for (int x = 0; x < image1.getWidth(); x++) {
+              for (int y = 0; y < image1.getHeight(); y++) {
+                  int pixel1 = image1.getRGB(x, y);
+                  int pixel2 = image2.getRGB(x, y);
+
+                  // Compare pixel colors
+                  if (pixel1 != pixel2) {
+                      return true; // Visual difference detected
+                  }
+              }
+          }
+
+          // No differences found
+          return false;
+      } catch (IOException e) {
+          e.printStackTrace();
+          return false; // Error occurred, consider it a difference
+      }
+  }
+
+	  
 	public static void navigateToBackPage() {
 		page.goBack();
 	}

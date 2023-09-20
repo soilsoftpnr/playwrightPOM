@@ -9,6 +9,7 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 import com.qa.opencart.constants.AppConstants;
 
 import automate.bastest.methods.BaseTest;
+import automate.datamanagement.methods.DataManagement;
 import automate.utils.common.Locaters;
 import automate.utils.common.TestData;
 
