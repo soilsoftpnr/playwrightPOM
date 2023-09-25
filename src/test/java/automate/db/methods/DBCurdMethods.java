@@ -9,32 +9,29 @@ import java.sql.Connection;
 
 public class DBCurdMethods {
 	 // Method for INSERT operation
-	public static boolean insertDataIntoDb(String host, String dbprovider, String dbservice, String port, String uname,
+	public static boolean insertDataIntoDb(String host, String dataBaseProviderName, String dbName, String port, String uname,
 			String pwd, String QUERY, String[] valuesToInsert, String variableToSave) throws Throwable {
 		Connection connection = null;
-	     Statement stmt = null;
-		 ResultSet rs = null;
 		boolean inserted = false;
 		int rowsInserted = 0;
 		String dburl = null;
-		String testData = "";
 		PreparedStatement preparedStatement = null;
 		try {
-			if (dbprovider.contains("postgresql")) {
-				dburl = "jdbc:" + dbprovider + "://" + host + ":" + port + "/" + dbservice;
+			if (dataBaseProviderName.contains("postgresql")) {
+				dburl = "jdbc:" + dataBaseProviderName + "://" + host + ":" + port + "/" + dbName;
 				connection = DbConnection.connectPostgreDB(dburl, uname, pwd);
-			} else if (dbprovider.contains("mssql")) {
-				dburl = "jdbc:sqlserver://" + host + ":" + port + ";databaseName=" + dbservice;
+			} else if (dataBaseProviderName.contains("mssql")) {
+				dburl = "jdbc:sqlserver://" + host + ":" + port + ";dataBaseProviderName=" + dbName;
 				connection = DbConnection.connectMsSQL(dburl, uname, pwd);
-			} else if (dbprovider.contains("mysql")) {
-				dburl = "jdbc:mysql://localhost:" + port + "/" + dbservice;
+			} else if (dataBaseProviderName.contains("mysql")) {
+				dburl = "jdbc:mysql://localhost:" + port + "/" + dbName;
 				connection = DbConnection.connectMySQL(dburl, uname, pwd);
-			} else if (dbprovider.contains("mongoDB")) {
-				dburl = "mongodb://" + uname + ":" + pwd + "@" + host + ":" + port + "/" + dbservice;
+			} else if (dataBaseProviderName.contains("mongoDB")) {
+				dburl = "mongodb://" + uname + ":" + pwd + "@" + host + ":" + port + "/" + dbName;
 
-				connection = (Connection)DbConnection.connectMangoDBAndExecueQuery(dburl, dbservice, pwd);
+				connection = (Connection)DbConnection.connectMangoDBAndExecueQuery(dburl, dbName, pwd);
 			} else {
-				dburl = "jdbc:" + dbprovider + ":thin:@" + host + ":" + port + ":" + dbservice;
+				dburl = "jdbc:" + dataBaseProviderName + ":thin:@" + host + ":" + port + ":" + dbName;
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				connection = DriverManager.getConnection(dburl, uname, pwd);
 				System.out.println("Connected");
@@ -91,35 +88,33 @@ public class DBCurdMethods {
 	
 
     // Method for SELECT operation
-	public static String readDataFromDb(String host, String dbprovider, String dbservice, String port, String uname,
+	public static String readDataFromDb(String host, String dataBaseProviderName, String dbName, String port, String uname,
 			String pwd, String QUERY, String columnName, String variableToSave) throws Throwable {
 
-		boolean isMultiDB = false;
-		int bugCount = 0;
-		int count = 0;
+		
 		// String queryCondition=QUERY.split("where")[1].trim();
 		Connection connection = null;
 	     Statement stmt = null;
-		 ResultSet rs = null;
+		
 		String dburl = null;
 		String testData = "";
 
 		try {
-			if (dbprovider.contains("postgresql")) {
-				dburl = "jdbc:" + dbprovider + "://" + host + ":" + port + "/" + dbservice;
+			if (dataBaseProviderName.contains("postgresql")) {
+				dburl = "jdbc:" + dataBaseProviderName + "://" + host + ":" + port + "/" + dbName;
 				connection = DbConnection.connectPostgreDB(dburl, uname, pwd);
-			} else if (dbprovider.contains("mssql")) {
-				dburl = "jdbc:sqlserver://" + host + ":" + port + ";databaseName=" + dbservice;
+			} else if (dataBaseProviderName.contains("mssql")) {
+				dburl = "jdbc:sqlserver://" + host + ":" + port + ";dataBaseProviderName=" + dbName;
 				connection = DbConnection.connectMsSQL(dburl, uname, pwd);
-			} else if (dbprovider.contains("mysql")) {
-				dburl = "jdbc:mysql://localhost:" + port + "/" + dbservice;
+			} else if (dataBaseProviderName.contains("mysql")) {
+				dburl = "jdbc:mysql://localhost:" + port + "/" + dbName;
 				connection = DbConnection.connectMySQL(dburl, uname, pwd);
-			} else if (dbprovider.contains("mongoDB")) {
-				dburl = "mongodb://" + uname + ":" + pwd + "@" + host + ":" + port + "/" + dbservice;
+			} else if (dataBaseProviderName.contains("mongoDB")) {
+				dburl = "mongodb://" + uname + ":" + pwd + "@" + host + ":" + port + "/" + dbName;
 
-				connection = DbConnection.connectMangoDBAndExecueQuery(dburl, dbservice, pwd);
+				connection = DbConnection.connectMangoDBAndExecueQuery(dburl, dbName, pwd);
 			} else {
-				dburl = "jdbc:" + dbprovider + ":thin:@" + host + ":" + port + ":" + dbservice;
+				dburl = "jdbc:" + dataBaseProviderName + ":thin:@" + host + ":" + port + ":" + dbName;
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				connection = DriverManager.getConnection(dburl, uname, pwd);
 				System.out.println("Connected");
@@ -152,35 +147,31 @@ public class DBCurdMethods {
 
 
     // Method for UPDATE operation
-	public static String updateDataInDb(String host, String dbprovider, String dbservice, String port, String uname,
+	public static String updateDataInDb(String host, String dataBaseProviderName, String dbName, String port, String uname,
 			String pwd, String QUERY, String columnName, String variableToSave) throws Throwable {
 		Connection connection = null;
 	     Statement stmt = null;
-		 ResultSet rs = null;
-		boolean isMultiDB = false;
-		int bugCount = 0;
-		int count = 0;
 		// String queryCondition=QUERY.split("where")[1].trim();
 
 		String dburl = null;
 		String testData = "";
 
 		try {
-			if (dbprovider.contains("postgresql")) {
-				dburl = "jdbc:" + dbprovider + "://" + host + ":" + port + "/" + dbservice;
+			if (dataBaseProviderName.contains("postgresql")) {
+				dburl = "jdbc:" + dataBaseProviderName + "://" + host + ":" + port + "/" + dbName;
 				connection = DbConnection.connectPostgreDB(dburl, uname, pwd);
-			} else if (dbprovider.contains("mssql")) {
-				dburl = "jdbc:sqlserver://" + host + ":" + port + ";databaseName=" + dbservice;
+			} else if (dataBaseProviderName.contains("mssql")) {
+				dburl = "jdbc:sqlserver://" + host + ":" + port + ";dataBaseProviderName=" + dbName;
 				connection = DbConnection.connectMsSQL(dburl, uname, pwd);
-			} else if (dbprovider.contains("mysql")) {
-				dburl = "jdbc:mysql://localhost:" + port + "/" + dbservice;
+			} else if (dataBaseProviderName.contains("mysql")) {
+				dburl = "jdbc:mysql://localhost:" + port + "/" + dbName;
 				connection = DbConnection.connectMySQL(dburl, uname, pwd);
-			} else if (dbprovider.contains("mongoDB")) {
-				dburl = "mongodb://" + uname + ":" + pwd + "@" + host + ":" + port + "/" + dbservice;
+			} else if (dataBaseProviderName.contains("mongoDB")) {
+				dburl = "mongodb://" + uname + ":" + pwd + "@" + host + ":" + port + "/" + dbName;
 
-				connection = DbConnection.connectMangoDBAndExecueQuery(dburl, dbservice, pwd);
+				connection = DbConnection.connectMangoDBAndExecueQuery(dburl, dbName, pwd);
 			} else {
-				dburl = "jdbc:" + dbprovider + ":thin:@" + host + ":" + port + ":" + dbservice;
+				dburl = "jdbc:" + dataBaseProviderName + ":thin:@" + host + ":" + port + ":" + dbName;
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				connection = DriverManager.getConnection(dburl, uname, pwd);
 				System.out.println("Connected");
@@ -211,35 +202,31 @@ public class DBCurdMethods {
 
     // Method for DELETE operation
 
-   public static String deleteDataInDb(String host, String dbprovider, String dbservice, String port, String uname,
+   public static String deleteDataInDb(String host, String dataBaseProviderName, String dbName, String port, String uname,
 			String pwd, String QUERY, String columnName, String variableToSave) throws Throwable {
 		Connection connection = null;
 	     Statement stmt = null;
-		 ResultSet rs = null;
-		boolean isMultiDB = false;
-		int bugCount = 0;
-		int count = 0;
 		// String queryCondition=QUERY.split("where")[1].trim();
 
 		String dburl = null;
 		String testData = "";
 
 		try {
-			if (dbprovider.contains("postgresql")) {
-				dburl = "jdbc:" + dbprovider + "://" + host + ":" + port + "/" + dbservice;
+			if (dataBaseProviderName.contains("postgresql")) {
+				dburl = "jdbc:" + dataBaseProviderName + "://" + host + ":" + port + "/" + dbName;
 				connection = DbConnection.connectPostgreDB(dburl, uname, pwd);
-			} else if (dbprovider.contains("mssql")) {
-				dburl = "jdbc:sqlserver://" + host + ":" + port + ";databaseName=" + dbservice;
+			} else if (dataBaseProviderName.contains("mssql")) {
+				dburl = "jdbc:sqlserver://" + host + ":" + port + ";dataBaseProviderName=" + dbName;
 				connection = DbConnection.connectMsSQL(dburl, uname, pwd);
-			} else if (dbprovider.contains("mysql")) {
-				dburl = "jdbc:mysql://localhost:" + port + "/" + dbservice;
+			} else if (dataBaseProviderName.contains("mysql")) {
+				dburl = "jdbc:mysql://localhost:" + port + "/" + dbName;
 				connection = DbConnection.connectMySQL(dburl, uname, pwd);
-			} else if (dbprovider.contains("mongoDB")) {
-				dburl = "mongodb://" + uname + ":" + pwd + "@" + host + ":" + port + "/" + dbservice;
+			} else if (dataBaseProviderName.contains("mongoDB")) {
+				dburl = "mongodb://" + uname + ":" + pwd + "@" + host + ":" + port + "/" + dbName;
 
-				connection = DbConnection.connectMangoDBAndExecueQuery(dburl, dbservice, pwd);
+				connection = DbConnection.connectMangoDBAndExecueQuery(dburl, dbName, pwd);
 			} else {
-				dburl = "jdbc:" + dbprovider + ":thin:@" + host + ":" + port + ":" + dbservice;
+				dburl = "jdbc:" + dataBaseProviderName + ":thin:@" + host + ":" + port + ":" + dbName;
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				connection = DriverManager.getConnection(dburl, uname, pwd);
 				System.out.println("Connected");
