@@ -211,8 +211,7 @@ public class DBCurdMethods {
 
     // Method for DELETE operation
 
-    // Method for UPDATE operation
-	public static String deleteDataInDb(String host, String dbprovider, String dbservice, String port, String uname,
+   public static String deleteDataInDb(String host, String dbprovider, String dbservice, String port, String uname,
 			String pwd, String QUERY, String columnName, String variableToSave) throws Throwable {
 		Connection connection = null;
 	     Statement stmt = null;
