@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.ITestResult;
 import org.apache.commons.io.FileUtils;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.imageio.ImageIO;
@@ -13,6 +14,8 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
+
 import com.qa.opencart.constants.*;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -23,6 +26,8 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.microsoft.playwright.ElementHandle;
+import com.microsoft.playwright.Frame;
+import com.microsoft.playwright.JSHandle;
 import com.microsoft.playwright.Keyboard;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Mouse;
@@ -533,12 +538,148 @@ public class BaseTest extends PlaywrightFactory {
 		page.selectOption(xpath, value);
 		takeScreenshot();
 	}
+	public static void enterTextinShadowRootElement(String shadowHostXPath, String shadowInputXPath,String Value) {
+		log.info("Performing selectDropdown Action for" + shadowHostXPath);
+		highlightElement(shadowHostXPath);
+		page.isVisible(shadowHostXPath);
+		  // Use JavaScript to access the shadow DOM
+ String script = "return document.evaluate('" + shadowHostXPath + "', document).iterateNext().shadowRoot";
+        JSHandle shadowRootHandle = page.evaluateHandle(script);
+        JSHandle inputElementHandle = shadowRootHandle.evaluateHandle("document.querySelector('" + shadowInputXPath + "')");
+
+        // Type text into the input element within the shadow DOM
+        inputElementHandle.asElement().type(Value);
+        
+	}
+	
+	public static void clickElementinShadowRootElement(String shadowHostXPath, String shadowClickXPath) {
+		log.info("Performing selectDropdown Action for" + shadowHostXPath);
+		highlightElement(shadowHostXPath);
+		page.isVisible(shadowHostXPath);
+		  // Use JavaScript to access the shadow DOM
+ String script = "return document.evaluate('" + shadowHostXPath + "', document).iterateNext().shadowRoot";
+        JSHandle shadowRootHandle = page.evaluateHandle(script);
+        JSHandle elementHandle = shadowRootHandle.evaluateHandle("document.querySelector('" + shadowClickXPath + "')");
+
+        // Type text into the input element within the shadow DOM
+        elementHandle.asElement().click();
+        
+	}
+	
+	public static ElementHandle findShadowDomIframeElements(String shadowHostXPath, String iframeElementXpath) {
+		log.info("Performing selectDropdown Action for" + shadowHostXPath);
+		highlightElement(shadowHostXPath);
+		page.isVisible(shadowHostXPath);
+
+        // Use JavaScript to access the shadow DOM
+        String script = "return document.evaluate('" + shadowHostXPath + "', document).iterateNext().shadowRoot";
+        JSHandle shadowRootHandle = page.evaluateHandle(script);
+
+        // Find all iframe elements within the shadow DOM
+        // Find all iframe elements within the shadow DOM
+        String iframeSearchScript = "return Array.from(arguments[0].shadowRoot.querySelectorAll('iframe'))";
+        JSHandle iframeHandlesHandle = shadowRootHandle.evaluateHandle(iframeSearchScript);
+        String findElementScript = "function findElementInIframes(args) { " +
+                "const shadowHostXPath = args.shadowHostXPath;" +
+                "const elementSelector = args.elementSelector;" +
+                "const shadowHost = document.evaluate(shadowHostXPath, document).iterateNext();" +
+                "if (!shadowHost) return null;" +
+                "const shadowRoot = shadowHost.shadowRoot;" +
+                "if (!shadowRoot) return null;" +
+                "const iframes = shadowRoot.querySelectorAll('iframe');" +
+                "for (const iframe of iframes) {" +
+                "   const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;" +
+                "   const element = iframeDocument.querySelector(elementSelector);" +
+                "   if (element) return element;" +
+                "}" +
+                "return null; }" +
+                "return findElementInIframes(arguments[0]);";
+
+        Object scriptArgs = new ScriptArgs(shadowHostXPath, iframeElementXpath);
+        return page.evaluateHandle(findElementScript, scriptArgs).asElement();
+    }
+        
+	  public static class ScriptArgs {
+	        public String shadowHostXPath;
+	        public String elementSelector;
+
+	        public ScriptArgs(String shadowHostXPath, String elementSelector) {
+	            this.shadowHostXPath = shadowHostXPath;
+	            this.elementSelector = elementSelector;
+	        }
+	    }
+	
 
 	public static String getPageTitle() {
 		String pageTitle = page.title();
 		return pageTitle;
 	}
 
+	
+	
+	
+	
+	public static void clickIframeElement(String xpath) {
+		log.info("Performing selectDropdown Action for" + xpath);
+		highlightElement(xpath);
+		page.isVisible(xpath);
+		   ElementHandle foundElement = findElementInAllIframes(page, xpath);
+
+           if (foundElement != null) {
+               // Perform actions on the element (e.g., click)
+               foundElement.click();
+               System.out.println("Element found and clicked.");
+           } else {
+               System.out.println("Element not found in any iframe.");
+           }        
+	}
+	
+	public static void EnterTextIframeElement(String xpath,String value) {
+		log.info("Performing selectDropdown Action for" + xpath);
+		highlightElement(xpath);
+		page.isVisible(xpath);
+		   ElementHandle foundElement = findElementInAllIframes(page, xpath);
+
+           if (foundElement != null) {
+               // Perform actions on the element (e.g., click)
+               foundElement.type(value);
+               System.out.println("Element found and clicked.");
+           } else {
+               System.out.println("Element not found in any iframe.");
+           }        
+	}
+	
+	
+	
+	 public static ElementHandle findElementInAllIframes(Page page, String elementSelector) {     final ElementHandle[] foundElement = {null};
+
+     // Function to recursively search for the element in iframes
+     page.querySelectorAll("iframe").forEach(iframeHandle -> {
+         Frame iframeFrame = iframeHandle.contentFrame();
+         ElementHandle elementInIframe = iframeFrame.waitForSelector(elementSelector);
+         if (elementInIframe != null) {
+             foundElement[0] = elementInIframe;
+         } else {
+             // Recursively search in nested iframes
+             findElementInIframes(iframeHandle, iframeFrame, elementSelector, foundElement);
+         }
+     });
+
+     return foundElement[0];
+}
+
+	 private static void findElementInIframes(ElementHandle iframeHandle, Frame iframeFrame, String elementSelector, ElementHandle[] foundElement) {
+	        iframeFrame.querySelectorAll("iframe").forEach(nestedIframeHandle -> {
+	            ElementHandle elementInIframe = nestedIframeHandle.contentFrame().waitForSelector(elementSelector);
+	            if (elementInIframe != null) {
+	                foundElement[0] = elementInIframe;
+	            } else {
+	                // Recursively search in more nested iframes
+	                findElementInIframes(nestedIframeHandle, nestedIframeHandle.contentFrame(), elementSelector, foundElement);
+	            }
+	        });
+	    }
+	
 	public static String getUrl() {
 		String url = page.url();
 		return url;
