@@ -23,14 +23,14 @@ public class OHRM_LoginTests extends BaseTest {
 		//Step#1 
 		initializeBrowser(TestData.browser,TestData.orangeHRMURL);
 		//Step#2
-		isLogoVisible(Locaters.orangeHRMLoginPageLogo);
+		isLogoVisible(Locaters.orangeHRMLoginPageLogo,true);
 		//Step#3
 		enterText(Locaters.orangeHRNUserName, "admin");
 		//Step#4
 		enterText(Locaters.orangeHRMPassword, "admin123");
 		//Step#5
 		clickButton(Locaters.orangeHRMLoginButton);
-	    isButtonVisible(Locaters.orangeHRMDashboard);
+	    isButtonVisible(Locaters.orangeHRMDashboard,true);
 		
 		
 		

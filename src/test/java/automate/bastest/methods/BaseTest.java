@@ -13,6 +13,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
+import org.testng.asserts.SoftAssert;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 
@@ -74,7 +75,7 @@ import com.qa.constants.*;
 public class BaseTest extends PlaywrightFactory {
 	public static Logger log = Logger.getLogger(BaseTest.class);
 	PlaywrightFactory pf;
-	
+
 	public static Page page;
 
 	public ExtentReports extent;
@@ -85,12 +86,11 @@ public class BaseTest extends PlaywrightFactory {
 	protected LoginPageTest loginpageTest;
 	public String folder = System.getProperty("user.dir") + "/screenshot/";
 
-		
-	
+	public static SoftAssert softAssert = new SoftAssert();
 
 	@BeforeTest
-	public void startReport(){
-		
+	public void startReport() {
+
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyyHH-mm-ss");
 		Date dt = new Date();
 		String fileName;
@@ -122,15 +122,15 @@ public class BaseTest extends PlaywrightFactory {
 		}
 	}
 
-	public void initializeBrowser(String Browser, String url)   {
+	public void initializeBrowser(String Browser, String url) {
 		pf = new PlaywrightFactory();
 		prop = pf.init_prop();
-		
+
 		String browserName = AppConstants.BROWSER;
 
 		page = pf.initBrowser(Browser, url);
-        // Maximize the window
-       page.setDefaultTimeout(Constants.durationTimeOut);
+		// Maximize the window
+		page.setDefaultTimeout(Constants.durationTimeOut);
 
 	}
 
@@ -273,54 +273,58 @@ public class BaseTest extends PlaywrightFactory {
 		page.fill(xpath, value);
 		takeScreenshot();
 	}
-	
-	public static void typeAndSelectValue(String xpath, String value,int index) {
+
+	public static void typeAndSelectValue(String xpath, String value, int index) {
 		log.info("Performing Enter Text Action for" + xpath);
 		page.isVisible(xpath);
 		highlightElement(xpath);
 		page.fill(xpath, value);
 		takeScreenshot();
-		  Keyboard keyboard = page.keyboard();
-		  
-			  keyboard.press("ArrowDown");
-		
-		  keyboard.press("Enter");
+		Keyboard keyboard = page.keyboard();
+
+		keyboard.press("ArrowDown");
+
+		keyboard.press("Enter");
 	}
-	
+
 	public static void getScreenshotOfParticularElement(String xpath) {
 		log.info("Performing clickCheckBox Action for" + xpath);
 		page.isVisible(xpath);
 		ElementHandle element = page.waitForSelector(xpath, new Page.WaitForSelectorOptions().setTimeout(250));
 
 		highlightElement(xpath);
-		
-		    
-	 // Take a screenshot of the element.
-		 
-		  try { byte[] screenshotData = element.screenshot();
-              String filePath = AppConstants.ELEMENT_SCREENSHOT_folderpath+ System.currentTimeMillis() + ".png";;
-              try (FileOutputStream fos = new FileOutputStream(filePath)) {
-                  fos.write(screenshotData);
-                  System.out.println("Screenshot saved to: "+filePath);
-              } catch (IOException e) {
-                  e.printStackTrace();
-              } } catch (Exception e) {
-              e.printStackTrace();
-          }
-          
-		    
-		   
+
+		// Take a screenshot of the element.
+
+		try {
+			byte[] screenshotData = element.screenshot();
+			String filePath = AppConstants.ELEMENT_SCREENSHOT_folderpath + System.currentTimeMillis() + ".png";
+			;
+			try (FileOutputStream fos = new FileOutputStream(filePath)) {
+				fos.write(screenshotData);
+				System.out.println("Screenshot saved to: " + filePath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
-
-	public static void verifyText(String xpath, String expectingTextValue) {
+	public static void verifyText(String xpath, String expectingTextValue, boolean continueIfTestFailed) {
 		log.info("Performing verifyText  Action for" + xpath);
-	   page.waitForSelector(xpath);
+		page.waitForSelector(xpath);
 		highlightElement(xpath);
 		String getText = page.innerText(xpath).trim();
 		takeScreenshot();
 		try {
-			assertEquals(expectingTextValue, getText);
+
+			if (continueIfTestFailed) {
+				softAssert.assertEquals(expectingTextValue, getText);
+			} else {
+				assertEquals(expectingTextValue, getText);
+			}
 		} catch (Exception e) {
 			Exception();
 		}
@@ -334,33 +338,31 @@ public class BaseTest extends PlaywrightFactory {
 		String fetchedText = page.innerText(xpath);
 		return fetchedText;
 	}
-	
-	public static void progressBar(String startXpath,String stopXpath,String ProgressbarXpath,int Percentage)
-	{ 
+
+	public static void progressBar(String startXpath, String stopXpath, String ProgressbarXpath, int Percentage) {
 		page.waitForLoadState(LoadState.NETWORKIDLE);
-    page.waitForSelector(startXpath);
-    page.waitForSelector(stopXpath);
-    
-    // Click the Start button
-    page.click(startXpath);  
-    // Wait for the progress bar to reach 
-    page.waitForFunction("() => {\n"
-            + "    const progressBar = document.querySelector('"+ProgressbarXpath+"');\n"
-            + "    const value = progressBar.getAttribute('aria-valuenow');\n"
-            + "    return value >= "+Percentage+";\n"
-            + "}");
-    
-    // Click the Stop button
-    page.click(stopXpath); 
-    
-    ElementHandle progressBarElement = page.querySelector(ProgressbarXpath); 
-    String progressBarValue = progressBarElement.getAttribute("aria-valuenow");
-    
-    int difference = Math.abs(Integer.parseInt(progressBarValue) - 75);
-    
-    System.out.println("Difference: " + difference);}
-	
-	public static void compareTwoUIText(String xpath,String xpath2) {
+		page.waitForSelector(startXpath);
+		page.waitForSelector(stopXpath);
+
+		// Click the Start button
+		page.click(startXpath);
+		// Wait for the progress bar to reach
+		page.waitForFunction("() => {\n" + "    const progressBar = document.querySelector('" + ProgressbarXpath
+				+ "');\n" + "    const value = progressBar.getAttribute('aria-valuenow');\n" + "    return value >= "
+				+ Percentage + ";\n" + "}");
+
+		// Click the Stop button
+		page.click(stopXpath);
+
+		ElementHandle progressBarElement = page.querySelector(ProgressbarXpath);
+		String progressBarValue = progressBarElement.getAttribute("aria-valuenow");
+
+		int difference = Math.abs(Integer.parseInt(progressBarValue) - 75);
+
+		System.out.println("Difference: " + difference);
+	}
+
+	public static void compareTwoUIText(String xpath, String xpath2) {
 		log.info("Performing get Text Action for" + xpath);
 		page.isVisible(xpath);
 		highlightElement(xpath);
@@ -369,9 +371,8 @@ public class BaseTest extends PlaywrightFactory {
 		String Text1 = page.innerText(xpath);
 		String Text2 = page.innerText(xpath2);
 	}
-	
 
-	public static void verifyLogo(String xpath) {
+	public static void verifyLogo(String xpath, boolean continueIfTestFailed) {
 		log.info("Performing verifyLogo for" + xpath);
 		ElementHandle element = page.waitForSelector(xpath, new Page.WaitForSelectorOptions().setTimeout(250));
 
@@ -385,14 +386,19 @@ public class BaseTest extends PlaywrightFactory {
 			} catch (Exception e) {
 
 			}
-			Assert.assertEquals(validateElement, true);
+			if (continueIfTestFailed) {
+				softAssert.assertEquals(validateElement, true);
+			} else {
+				Assert.assertEquals(validateElement, true);
+			}
+
 		} catch (Exception e) {
 			Exception();
 		}
 
 	}
 
-	public static void isButtonVisible(String xpath) {
+	public static void isButtonVisible(String xpath, boolean continueIfTestFailed) {
 		boolean status = false;
 		try {
 			ElementHandle element = page.waitForSelector(xpath, new Page.WaitForSelectorOptions().setTimeout(100));
@@ -406,28 +412,37 @@ public class BaseTest extends PlaywrightFactory {
 		}
 		highlightElement(xpath);
 		takeScreenshot();
-		Assert.assertEquals(status, true);
-	}
-	
-	
-	public static void isLogoVisible(String xpath) {
-		boolean status = false;
-		try {
-			ElementHandle element = page.waitForSelector(xpath, new Page.WaitForSelectorOptions().setTimeout(100));
-			if (element == null) {
-				status = false;
-			} else {
-				status = element.isVisible();
-			}
-		} catch (PlaywrightException ex) {
-			status = false;
+		if (continueIfTestFailed) {
+			softAssert.assertEquals(status, true);
+		} else {
+			Assert.assertEquals(status, true);
 		}
-		highlightElement(xpath);
-		takeScreenshot();
-		Assert.assertEquals(status, true);
+
 	}
 
-	public static void isButtonNotVisible(String xpath) {
+	public static void isLogoVisible(String xpath, boolean continueIfTestFailed) {
+		boolean status = false;
+		try {
+			ElementHandle element = page.waitForSelector(xpath, new Page.WaitForSelectorOptions().setTimeout(100));
+			if (element == null) {
+				status = false;
+			} else {
+				status = element.isVisible();
+			}
+		} catch (PlaywrightException ex) {
+			status = false;
+		}
+		highlightElement(xpath);
+		takeScreenshot();
+		if (continueIfTestFailed) {
+			softAssert.assertEquals(status, true);
+		} else {
+			Assert.assertEquals(status, true);
+		}
+
+	}
+
+	public static void isButtonNotVisible(String xpath, boolean continueIfTestFailed) {
 		boolean status = false;
 		try {
 			ElementHandle element = page.waitForSelector(xpath, new Page.WaitForSelectorOptions().setTimeout(30));
@@ -441,7 +456,11 @@ public class BaseTest extends PlaywrightFactory {
 		}
 		highlightElement(xpath);
 		takeScreenshot();
-		Assert.assertEquals(status, false);
+		if (continueIfTestFailed) {
+			softAssert.assertEquals(status, true);
+		} else {
+			Assert.assertEquals(status, true);
+		}
 
 	}
 
@@ -538,148 +557,141 @@ public class BaseTest extends PlaywrightFactory {
 		page.selectOption(xpath, value);
 		takeScreenshot();
 	}
-	public static void enterTextinShadowRootElement(String shadowHostXPath, String shadowInputXPath,String Value) {
+
+	public static void enterTextinShadowRootElement(String shadowHostXPath, String shadowInputXPath, String Value) {
 		log.info("Performing selectDropdown Action for" + shadowHostXPath);
 		highlightElement(shadowHostXPath);
 		page.isVisible(shadowHostXPath);
-		  // Use JavaScript to access the shadow DOM
- String script = "return document.evaluate('" + shadowHostXPath + "', document).iterateNext().shadowRoot";
-        JSHandle shadowRootHandle = page.evaluateHandle(script);
-        JSHandle inputElementHandle = shadowRootHandle.evaluateHandle("document.querySelector('" + shadowInputXPath + "')");
+		// Use JavaScript to access the shadow DOM
+		String script = "return document.evaluate('" + shadowHostXPath + "', document).iterateNext().shadowRoot";
+		JSHandle shadowRootHandle = page.evaluateHandle(script);
+		JSHandle inputElementHandle = shadowRootHandle
+				.evaluateHandle("document.querySelector('" + shadowInputXPath + "')");
 
-        // Type text into the input element within the shadow DOM
-        inputElementHandle.asElement().type(Value);
-        
+		// Type text into the input element within the shadow DOM
+		inputElementHandle.asElement().type(Value);
+
 	}
-	
+
 	public static void clickElementinShadowRootElement(String shadowHostXPath, String shadowClickXPath) {
 		log.info("Performing selectDropdown Action for" + shadowHostXPath);
 		highlightElement(shadowHostXPath);
 		page.isVisible(shadowHostXPath);
-		  // Use JavaScript to access the shadow DOM
- String script = "return document.evaluate('" + shadowHostXPath + "', document).iterateNext().shadowRoot";
-        JSHandle shadowRootHandle = page.evaluateHandle(script);
-        JSHandle elementHandle = shadowRootHandle.evaluateHandle("document.querySelector('" + shadowClickXPath + "')");
+		// Use JavaScript to access the shadow DOM
+		String script = "return document.evaluate('" + shadowHostXPath + "', document).iterateNext().shadowRoot";
+		JSHandle shadowRootHandle = page.evaluateHandle(script);
+		JSHandle elementHandle = shadowRootHandle.evaluateHandle("document.querySelector('" + shadowClickXPath + "')");
 
-        // Type text into the input element within the shadow DOM
-        elementHandle.asElement().click();
-        
+		// Type text into the input element within the shadow DOM
+		elementHandle.asElement().click();
+
 	}
-	
+
 	public static ElementHandle findShadowDomIframeElements(String shadowHostXPath, String iframeElementXpath) {
 		log.info("Performing selectDropdown Action for" + shadowHostXPath);
 		highlightElement(shadowHostXPath);
 		page.isVisible(shadowHostXPath);
 
-        // Use JavaScript to access the shadow DOM
-        String script = "return document.evaluate('" + shadowHostXPath + "', document).iterateNext().shadowRoot";
-        JSHandle shadowRootHandle = page.evaluateHandle(script);
+		// Use JavaScript to access the shadow DOM
+		String script = "return document.evaluate('" + shadowHostXPath + "', document).iterateNext().shadowRoot";
+		JSHandle shadowRootHandle = page.evaluateHandle(script);
 
-        // Find all iframe elements within the shadow DOM
-        // Find all iframe elements within the shadow DOM
-        String iframeSearchScript = "return Array.from(arguments[0].shadowRoot.querySelectorAll('iframe'))";
-        JSHandle iframeHandlesHandle = shadowRootHandle.evaluateHandle(iframeSearchScript);
-        String findElementScript = "function findElementInIframes(args) { " +
-                "const shadowHostXPath = args.shadowHostXPath;" +
-                "const elementSelector = args.elementSelector;" +
-                "const shadowHost = document.evaluate(shadowHostXPath, document).iterateNext();" +
-                "if (!shadowHost) return null;" +
-                "const shadowRoot = shadowHost.shadowRoot;" +
-                "if (!shadowRoot) return null;" +
-                "const iframes = shadowRoot.querySelectorAll('iframe');" +
-                "for (const iframe of iframes) {" +
-                "   const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;" +
-                "   const element = iframeDocument.querySelector(elementSelector);" +
-                "   if (element) return element;" +
-                "}" +
-                "return null; }" +
-                "return findElementInIframes(arguments[0]);";
+		// Find all iframe elements within the shadow DOM
+		// Find all iframe elements within the shadow DOM
+		String iframeSearchScript = "return Array.from(arguments[0].shadowRoot.querySelectorAll('iframe'))";
+		JSHandle iframeHandlesHandle = shadowRootHandle.evaluateHandle(iframeSearchScript);
+		String findElementScript = "function findElementInIframes(args) { "
+				+ "const shadowHostXPath = args.shadowHostXPath;" + "const elementSelector = args.elementSelector;"
+				+ "const shadowHost = document.evaluate(shadowHostXPath, document).iterateNext();"
+				+ "if (!shadowHost) return null;" + "const shadowRoot = shadowHost.shadowRoot;"
+				+ "if (!shadowRoot) return null;" + "const iframes = shadowRoot.querySelectorAll('iframe');"
+				+ "for (const iframe of iframes) {"
+				+ "   const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;"
+				+ "   const element = iframeDocument.querySelector(elementSelector);"
+				+ "   if (element) return element;" + "}" + "return null; }"
+				+ "return findElementInIframes(arguments[0]);";
 
-        Object scriptArgs = new ScriptArgs(shadowHostXPath, iframeElementXpath);
-        return page.evaluateHandle(findElementScript, scriptArgs).asElement();
-    }
-        
-	  public static class ScriptArgs {
-	        public String shadowHostXPath;
-	        public String elementSelector;
+		Object scriptArgs = new ScriptArgs(shadowHostXPath, iframeElementXpath);
+		return page.evaluateHandle(findElementScript, scriptArgs).asElement();
+	}
 
-	        public ScriptArgs(String shadowHostXPath, String elementSelector) {
-	            this.shadowHostXPath = shadowHostXPath;
-	            this.elementSelector = elementSelector;
-	        }
-	    }
-	
+	public static class ScriptArgs {
+		public String shadowHostXPath;
+		public String elementSelector;
+
+		public ScriptArgs(String shadowHostXPath, String elementSelector) {
+			this.shadowHostXPath = shadowHostXPath;
+			this.elementSelector = elementSelector;
+		}
+	}
 
 	public static String getPageTitle() {
 		String pageTitle = page.title();
 		return pageTitle;
 	}
 
-	
-	
-	
-	
 	public static void clickIframeElement(String xpath) {
 		log.info("Performing selectDropdown Action for" + xpath);
 		highlightElement(xpath);
 		page.isVisible(xpath);
-		   ElementHandle foundElement = findElementInAllIframes(page, xpath);
+		ElementHandle foundElement = findElementInAllIframes(page, xpath);
 
-           if (foundElement != null) {
-               // Perform actions on the element (e.g., click)
-               foundElement.click();
-               System.out.println("Element found and clicked.");
-           } else {
-               System.out.println("Element not found in any iframe.");
-           }        
+		if (foundElement != null) {
+			// Perform actions on the element (e.g., click)
+			foundElement.click();
+			System.out.println("Element found and clicked.");
+		} else {
+			System.out.println("Element not found in any iframe.");
+		}
 	}
-	
-	public static void EnterTextIframeElement(String xpath,String value) {
+
+	public static void EnterTextIframeElement(String xpath, String value) {
 		log.info("Performing selectDropdown Action for" + xpath);
 		highlightElement(xpath);
 		page.isVisible(xpath);
-		   ElementHandle foundElement = findElementInAllIframes(page, xpath);
+		ElementHandle foundElement = findElementInAllIframes(page, xpath);
 
-           if (foundElement != null) {
-               // Perform actions on the element (e.g., click)
-               foundElement.type(value);
-               System.out.println("Element found and clicked.");
-           } else {
-               System.out.println("Element not found in any iframe.");
-           }        
+		if (foundElement != null) {
+			// Perform actions on the element (e.g., click)
+			foundElement.type(value);
+			System.out.println("Element found and clicked.");
+		} else {
+			System.out.println("Element not found in any iframe.");
+		}
 	}
-	
-	
-	
-	 public static ElementHandle findElementInAllIframes(Page page, String elementSelector) {     final ElementHandle[] foundElement = {null};
 
-     // Function to recursively search for the element in iframes
-     page.querySelectorAll("iframe").forEach(iframeHandle -> {
-         Frame iframeFrame = iframeHandle.contentFrame();
-         ElementHandle elementInIframe = iframeFrame.waitForSelector(elementSelector);
-         if (elementInIframe != null) {
-             foundElement[0] = elementInIframe;
-         } else {
-             // Recursively search in nested iframes
-             findElementInIframes(iframeHandle, iframeFrame, elementSelector, foundElement);
-         }
-     });
+	public static ElementHandle findElementInAllIframes(Page page, String elementSelector) {
+		final ElementHandle[] foundElement = { null };
 
-     return foundElement[0];
-}
+		// Function to recursively search for the element in iframes
+		page.querySelectorAll("iframe").forEach(iframeHandle -> {
+			Frame iframeFrame = iframeHandle.contentFrame();
+			ElementHandle elementInIframe = iframeFrame.waitForSelector(elementSelector);
+			if (elementInIframe != null) {
+				foundElement[0] = elementInIframe;
+			} else {
+				// Recursively search in nested iframes
+				findElementInIframes(iframeHandle, iframeFrame, elementSelector, foundElement);
+			}
+		});
 
-	 private static void findElementInIframes(ElementHandle iframeHandle, Frame iframeFrame, String elementSelector, ElementHandle[] foundElement) {
-	        iframeFrame.querySelectorAll("iframe").forEach(nestedIframeHandle -> {
-	            ElementHandle elementInIframe = nestedIframeHandle.contentFrame().waitForSelector(elementSelector);
-	            if (elementInIframe != null) {
-	                foundElement[0] = elementInIframe;
-	            } else {
-	                // Recursively search in more nested iframes
-	                findElementInIframes(nestedIframeHandle, nestedIframeHandle.contentFrame(), elementSelector, foundElement);
-	            }
-	        });
-	    }
-	
+		return foundElement[0];
+	}
+
+	private static void findElementInIframes(ElementHandle iframeHandle, Frame iframeFrame, String elementSelector,
+			ElementHandle[] foundElement) {
+		iframeFrame.querySelectorAll("iframe").forEach(nestedIframeHandle -> {
+			ElementHandle elementInIframe = nestedIframeHandle.contentFrame().waitForSelector(elementSelector);
+			if (elementInIframe != null) {
+				foundElement[0] = elementInIframe;
+			} else {
+				// Recursively search in more nested iframes
+				findElementInIframes(nestedIframeHandle, nestedIframeHandle.contentFrame(), elementSelector,
+						foundElement);
+			}
+		});
+	}
+
 	public static String getUrl() {
 		String url = page.url();
 		return url;
@@ -693,42 +705,40 @@ public class BaseTest extends PlaywrightFactory {
 		return link;
 
 	}
-	
-	
-	  public static boolean visualTesting(String screenshotPath, String referenceImagePath) {
-		
-		  try {
-          // Load the images
-          BufferedImage image1 = ImageIO.read(new File(screenshotPath));
-          BufferedImage image2 = ImageIO.read(new File(referenceImagePath));
 
-          // Check if images have the same dimensions
-          if (image1.getWidth() != image2.getWidth() || image1.getHeight() != image2.getHeight()) {
-              return true; // Images have different dimensions, consider them different
-          }
+	public static boolean visualTesting(String screenshotPath, String referenceImagePath) {
 
-          // Compare pixel by pixel
-          for (int x = 0; x < image1.getWidth(); x++) {
-              for (int y = 0; y < image1.getHeight(); y++) {
-                  int pixel1 = image1.getRGB(x, y);
-                  int pixel2 = image2.getRGB(x, y);
+		try {
+			// Load the images
+			BufferedImage image1 = ImageIO.read(new File(screenshotPath));
+			BufferedImage image2 = ImageIO.read(new File(referenceImagePath));
 
-                  // Compare pixel colors
-                  if (pixel1 != pixel2) {
-                      return true; // Visual difference detected
-                  }
-              }
-          }
+			// Check if images have the same dimensions
+			if (image1.getWidth() != image2.getWidth() || image1.getHeight() != image2.getHeight()) {
+				return true; // Images have different dimensions, consider them different
+			}
 
-          // No differences found
-          return false;
-      } catch (IOException e) {
-          e.printStackTrace();
-          return false; // Error occurred, consider it a difference
-      }
-  }
+			// Compare pixel by pixel
+			for (int x = 0; x < image1.getWidth(); x++) {
+				for (int y = 0; y < image1.getHeight(); y++) {
+					int pixel1 = image1.getRGB(x, y);
+					int pixel2 = image2.getRGB(x, y);
 
-	  
+					// Compare pixel colors
+					if (pixel1 != pixel2) {
+						return true; // Visual difference detected
+					}
+				}
+			}
+
+			// No differences found
+			return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false; // Error occurred, consider it a difference
+		}
+	}
+
 	public static void navigateToBackPage() {
 		page.goBack();
 	}

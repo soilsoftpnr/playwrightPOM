@@ -30,7 +30,7 @@ public class ComplexScenarios extends BaseTest {
 		//Step#2
 		clickButton(Locaters.dynamicidlink);
 		//Step#3
-		isButtonVisible(Locaters.buttonWithdynamicId);
+		isButtonVisible(Locaters.buttonWithdynamicId,true);
 		//Step#4
 		clickButton(Locaters.buttonWithdynamicId);
 		//Step#5
@@ -38,15 +38,15 @@ public class ComplexScenarios extends BaseTest {
 		
 		
 		//Step#6
-		isButtonVisible(Locaters.classAttributeLink);
+		isButtonVisible(Locaters.classAttributeLink,true);
 		//step#7
 		clickButton(Locaters.classAttributeLink);
 		//Step#8
-		isButtonVisible(Locaters.btnPrimary);
+		isButtonVisible(Locaters.btnPrimary, false);
 		//Step#8
-		isButtonVisible(Locaters.btnSuccess);
+		isButtonVisible(Locaters.btnSuccess, false);
 		//Step#9
-		isButtonVisible(Locaters.btnWarning);
+		isButtonVisible(Locaters.btnWarning, false);
 		//Step#10
 		clickButton(Locaters.btnPrimary);
 		//Step#11
@@ -55,11 +55,11 @@ public class ComplexScenarios extends BaseTest {
 		
 		
 		//Step#12
-		isButtonVisible(Locaters.hiddenLayersLink);
+		isButtonVisible(Locaters.hiddenLayersLink, false);
 		//Step#13
 		clickButton(Locaters.hiddenLayersLink);
 		//Step#14
-		isButtonVisible(Locaters.greenButton);
+		isButtonVisible(Locaters.greenButton, false);
 		//Step#15
 		clickButton(Locaters.greenButton);
 		//Step#16
@@ -69,73 +69,73 @@ public class ComplexScenarios extends BaseTest {
 		
 		
 		//Step#18
-		isButtonVisible(Locaters.loadDelayLink);
+		isButtonVisible(Locaters.loadDelayLink, false);
 		//Step#19
 		clickButton(Locaters.loadDelayLink);
 		//Step#20
-		isButtonVisible(Locaters.buttonAppearingaterDelay);
+		isButtonVisible(Locaters.buttonAppearingaterDelay, false);
 		//Step#21
 		navigateToBackPage();
 		
 		
 		
 		//Step#22
-		isButtonVisible(Locaters.ajaxDataLink);
+		isButtonVisible(Locaters.ajaxDataLink, false);
 		//Step#23
 		clickButton(Locaters.ajaxDataLink);
 		//Step#24
-		isButtonVisible(Locaters.buttonTriggeringAJAXRequest);
+		isButtonVisible(Locaters.buttonTriggeringAJAXRequest, false);
 		//Step#25
 		clickButton(Locaters.buttonTriggeringAJAXRequest);
 		//Step#26
-		verifyText(Locaters.dataloadedwithAJAXGetrequest, "Data loaded with AJAX get request.");
+		verifyText(Locaters.dataloadedwithAJAXGetrequest, "Data loaded with AJAX get request.", false);
 		//Step#27
 		navigateToBackPage();
 		
 		
 		//Step#28
-		isButtonVisible(Locaters.clientSideDelayLink);
+		isButtonVisible(Locaters.clientSideDelayLink, false);
 		//Step#29
 		clickButton(Locaters.clientSideDelayLink);
 		//Step#30
-		isButtonVisible(Locaters.buttonTriggeringClientSideLogic);
+		isButtonVisible(Locaters.buttonTriggeringClientSideLogic, false);
 		//Step#31
 		clickButton(Locaters.buttonTriggeringClientSideLogic);
 		//Step#32
-		verifyText(Locaters.dataCalculatedOnTheClientSide, "Data calculated on the client side.");
+		verifyText(Locaters.dataCalculatedOnTheClientSide, "Data calculated on the client side.", false);
 		//Step#33
 		navigateToBackPage();
 				
 		
 
 		//Step#34
-		isButtonVisible(Locaters.clickLink);
+		isButtonVisible(Locaters.clickLink, false);
 		//Step#35
 		clickButton(Locaters.clickLink);
 		//Step#36
-		isButtonVisible(Locaters.buttonThatIgnoresDOMClickEvent);
+		isButtonVisible(Locaters.buttonThatIgnoresDOMClickEvent, false);
 		//Step#37
 		clickButton(Locaters.buttonThatIgnoresDOMClickEvent);
 		//Step#38
-		isButtonVisible(Locaters.buttonThatIgnoresDOMClickEventsuccuess);
+		isButtonVisible(Locaters.buttonThatIgnoresDOMClickEventsuccuess, false);
 		//Step#39
 		navigateToBackPage();
 		
 		
 		//Step#40
-		isButtonVisible(Locaters.textInputLink);
+		isButtonVisible(Locaters.textInputLink, false);
 		//Step#41
 		clickButton(Locaters.textInputLink);
 		//Step#42
-		isButtonVisible(Locaters.buttonThatIgnoresDOMClickEvent);
+		isButtonVisible(Locaters.buttonThatIgnoresDOMClickEvent, false);
 		//Step#43
 		enterText(Locaters.textInput, "Demo Testing");
 		//Step#44
-		isButtonVisible(Locaters.updatingButton);
+		isButtonVisible(Locaters.updatingButton, false);
 	    //Step#45
 		clickButton(Locaters.updatingButton);
 		//Step#46
-		verifyText(Locaters.updatingButton, "Demo Testing");
+		verifyText(Locaters.updatingButton, "Demo Testing", false);
 		//Step#47
 		navigateToBackPage();
 		
@@ -143,7 +143,7 @@ public class ComplexScenarios extends BaseTest {
 		
 				
 		//Step#48
-		isButtonVisible(Locaters.scrollbarsLink);
+		isButtonVisible(Locaters.scrollbarsLink, false);
 		//Step#49
 		clickButton(Locaters.scrollbarsLink);
 		//Step#50
@@ -155,7 +155,7 @@ public class ComplexScenarios extends BaseTest {
 		
 		
 		//Step#52
-		isButtonVisible(Locaters.dynamicTableLink);
+		isButtonVisible(Locaters.dynamicTableLink, false);
 		//Step#53
 		clickButton(Locaters.dynamicTableLink);
 		//Step#54
@@ -165,17 +165,17 @@ public class ComplexScenarios extends BaseTest {
        	
        	
         //Step#52
-      	isButtonVisible(Locaters.verifytextLink);
+      	isButtonVisible(Locaters.verifytextLink, false);
       	//Step#53
       	clickButton(Locaters.verifytextLink);
       	//Step#54
-        verifyText(Locaters.verifyText,"Welcome");
+        verifyText(Locaters.verifyText,"Welcome", false);
       	//Step#55
         navigateToBackPage();
         
         
         //Step#52
-      	isButtonVisible(Locaters.progressBar);
+      	isButtonVisible(Locaters.progressBar, false);
       	//Step#53
       	clickButton(Locaters.progressBar);
       	//Step#54
@@ -186,51 +186,51 @@ public class ComplexScenarios extends BaseTest {
         
         
        //Step#56
-      	isButtonVisible(Locaters.visibilityLink);
+      	isButtonVisible(Locaters.visibilityLink, false);
       	//Step#57
       	clickButton(Locaters.visibilityLink);
       	//Step#58
-    	isButtonVisible(Locaters.hideButton);
+    	isButtonVisible(Locaters.hideButton, false);
       	//Step#59
-    	isButtonVisible(Locaters.removedButton);
+    	isButtonVisible(Locaters.removedButton, false);
     	//Step#60
-    	isButtonVisible(Locaters.zeroWidthButton);
+    	isButtonVisible(Locaters.zeroWidthButton, false);
     	//Step#61
-    	isButtonVisible(Locaters.overlappedButton);
+    	isButtonVisible(Locaters.overlappedButton, false);
     	//Step#62
-    	isButtonVisible(Locaters.transparentButton);
+    	isButtonVisible(Locaters.transparentButton, false);
     	//Step#63
-    	isButtonVisible(Locaters.invisibleButton);
+    	isButtonVisible(Locaters.invisibleButton, false);
     	//Step#64
-    	isButtonVisible(Locaters.notdisplayedButton);
+    	isButtonVisible(Locaters.notdisplayedButton, false);
     	//Step#65
-    	isButtonVisible(Locaters.offscreenButton);
+    	isButtonVisible(Locaters.offscreenButton, false);
     	//Step#66
-    	isButtonVisible(Locaters.verifytextLink);
+    	isButtonVisible(Locaters.verifytextLink, false);
     	//Step#67
     	clickButton(Locaters.hideButton);
     	//Step#68
-    	isButtonNotVisible(Locaters.removedButton);
+    	isButtonNotVisible(Locaters.removedButton, false);
     	//Step#69
-    	isButtonNotVisible(Locaters.zeroWidthButton);
+    	isButtonNotVisible(Locaters.zeroWidthButton, false);
     	//Step#70
-    	isButtonNotVisible(Locaters.overlappedButton);
+    	isButtonNotVisible(Locaters.overlappedButton, false);
     	//Step#71
-    	isButtonNotVisible(Locaters.transparentButton);
+    	isButtonNotVisible(Locaters.transparentButton, false);
     	//Step#72
-    	isButtonNotVisible(Locaters.invisibleButton);
+    	isButtonNotVisible(Locaters.invisibleButton, false);
     	//Step#73
-    	isButtonNotVisible(Locaters.notdisplayedButton);
+    	isButtonNotVisible(Locaters.notdisplayedButton, false);
     	//Step#74
-    	isButtonNotVisible(Locaters.offscreenButton);
+    	isButtonNotVisible(Locaters.offscreenButton, false);
     	//Step#75
-    	isButtonNotVisible(Locaters.verifytextLink);
+    	isButtonNotVisible(Locaters.verifytextLink, false);
     	//Step#76
     	 navigateToBackPage();
     	 
     	 
     	//Step#77
-       	isButtonVisible(Locaters.sampleAppLink);
+       	isButtonVisible(Locaters.sampleAppLink, false);
        	//Step#78
        	clickButton(Locaters.sampleAppLink);
        	//Step#79
@@ -240,13 +240,13 @@ public class ComplexScenarios extends BaseTest {
         //Step#81
         clickButton(Locaters.logIN);
         //Step#82
-        verifyText(Locaters.loginStatus, "Invalid username/password");
+        verifyText(Locaters.loginStatus, "Invalid username/password", false);
         //Step#83
         navigateToBackPage();
         
         
         //Step#84
-       	isButtonVisible(Locaters.mousehoverLink);
+       	isButtonVisible(Locaters.mousehoverLink, false);
        	//Step#85
        	clickButton(Locaters.mousehoverLink);
        	//Step#86
@@ -256,23 +256,23 @@ public class ComplexScenarios extends BaseTest {
        	//Step#88
        	clickButton(Locaters.clickMe);
        	//Step#89
-        verifyText(Locaters.linkedClickedTimes, "3");
+        verifyText(Locaters.linkedClickedTimes, "3", false);
         
         
         
         
         //Step#90
-       	isButtonVisible(Locaters.nonBreakingSpaceLink);
+       	isButtonVisible(Locaters.nonBreakingSpaceLink, false);
        	//Step#91
        	clickButton(Locaters.nonBreakingSpaceLink);
        	//Step#92
-       	isButtonVisible(Locaters.myButton);
+       	isButtonVisible(Locaters.myButton, false);
         //Step#93
         navigateToBackPage();
         
         
         //Step#94
-       	isButtonVisible(Locaters.overlappedButton);
+       	isButtonVisible(Locaters.overlappedButton, false);
        	//Step#95
        	clickButton(Locaters.overlappedButton);
        	//Step#96
@@ -298,7 +298,7 @@ public class ComplexScenarios extends BaseTest {
 	    //Step#4
 	    clickButton(Locaters.loginBtn);
 	    //Step#5
-	    verifyLogo(Locaters.userName);
+	    verifyLogo(Locaters.userName, false);
 	}
 
 
